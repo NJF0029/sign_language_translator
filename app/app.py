@@ -18,12 +18,12 @@ st.markdown("""
 
 @st.cache(allow_output_mutation=True)
 def get_best_model():
-    best_model = keras.models.load_model('models/experiment-dropout-0')
+    best_model = keras.models.load_model('models/')
     return best_model
 
 @st.cache
 def get_label_binarizer():
-    train_df = pd.read_csv('data/alphabet/sign_mnist_train.csv')
+    train_df = pd.read_csv('data')
     y = train_df['label']
     label_binarizer = LabelBinarizer()
     y = label_binarizer.fit_transform(y)
@@ -54,10 +54,9 @@ best_model = get_best_model()
 label_binarizer = get_label_binarizer()
 
 st.markdown('You can find the Convolutional Neural Netowrk used [here](https://github.com/NJF0029/sign_language_translator)')
-st.markdown('Use 28x28 images (size of the training images) to obtain the accurate results')
 
 st.subheader('Convert Image to English letter')
-image_file = st.file_uploader('Choose the ASL Image', ['jpg', 'png'])
+image_file = st.file_uploader('Choose the Sign Language Image', ['jpg', 'png'])
 
 if image_file is not None:
     image = Image.open(image_file).convert('L')
@@ -66,7 +65,7 @@ if image_file is not None:
     st.write(f'The image is predicted as {letter}')
 
 st.subheader('Convert images to English sentence')
-sentence_image_files = st.file_uploader('Select the ASL Images', ['jpg', 'png'], accept_multiple_files = True)
+sentence_image_files = st.file_uploader('Select the Sign Language Images', ['jpg', 'png'], accept_multiple_files = True)
 
 if len(sentence_image_files) > 0:
     sentence = ''
