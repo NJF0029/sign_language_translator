@@ -20,13 +20,10 @@ from tensorflow.keras.backend import expand_dims
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.preprocessing import image
 
+#########################################
+#########################################
 
-#possibly not necessary
-import matplotlib.pyplot as plt
-import seaborn as sns
-from tensorflow.keras.utils import load_img, img_to_array
-
-#Add augmentation
+## AUGMENTATION
 # TF >= 2.3.0 required
 data_augmentation = models.Sequential(
     [
@@ -34,6 +31,8 @@ data_augmentation = models.Sequential(
         layers.experimental.preprocessing.RandomContrast(factor=0.1,),
     ]
 )
+
+## INITIALIZE MODEL
 
 def initialize_model():
     model = models.Sequential()
@@ -73,9 +72,11 @@ def initialize_model():
     return model
 model = initialize_model()
 
+## TRAIN MODEL
+
 es = EarlyStopping(patience = 5)
-#save_best_cb = ModelCheckpoint(
-#   'models/initial-end-to-end', save_best_only = True)
+save_best_cb = ModelCheckpoint(
+   'models/initial-end-to-end', save_best_only = True)
 
 history = model.fit(X_train,
                     y_train,
@@ -88,7 +89,7 @@ history = model.fit(X_train,
 res = model.evaluate(X_test, y_test, verbose = 1 )
 print(f'The accuracy on the test set is of {res[1]*100:.2f} %')
 
-#One hot encode test label
+## TEST DATA - ONE HOT ENCODE
 def binarize(df):
     df_labels = df['label']
     label_binarizer = LabelBinarizer()
@@ -97,7 +98,7 @@ def binarize(df):
 
 test_labels = binarize(test)
 
-#Reshape train data
+# TRAIN DATA - RESHAPE
 def reshape_data(df):
 
     df.drop('label', axis=1, inplace=True)
@@ -109,9 +110,10 @@ def reshape_data(df):
 
     return images
 
+# RESHAPE TRAIN DATA TOO??
 test_images = reshape_data(test)
 
-#Match label to corresponding letter
+# MATCH LABEL TO CORRESPONDING LETTER
 def get_letter(result):
     class_names = ['A',
                    'B',
@@ -144,7 +146,6 @@ def get_letter(result):
     i = np.random.randint(1,len(predictions))
     print("Predicted Label: ", class_names[int(predictions[i])])
     print("True Label: ", class_names[int(y_test[i])])
-
 
 result = np.argmax(model.predict(tf.reshape(1,28,28,1)))
 get_letter(result)
