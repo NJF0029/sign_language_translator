@@ -151,11 +151,11 @@ get_letter(result)
 
 #Load a jpg
 #def load(new_im):
-    img = new_im
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    img = cv2.resize(img, (100,100))
-    img = img.astype('float32')/255
-    return img
+    #img = new_im
+    #img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #img = cv2.resize(img, (100,100))
+    #img = img.astype('float32')/255
+    #return img
 
 #load gray reshaped image for classification
 #resized_image = load(new_im)
